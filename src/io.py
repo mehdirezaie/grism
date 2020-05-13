@@ -3,6 +3,21 @@
 '''
 
 import fitsio
+import numpy
+
+
+
+class array(numpy.ndarray):
+
+    def __new__(cls, a):
+        obj = numpy.asarray(a).view(cls)
+        return obj
+    
+    def imshow(self, **kwargs):
+        import matplotlib.pyplot as plt
+        plt.figure()
+        plt.imshow(self, **kwargs)
+        plt.show()
 
 class DataLoader:
     '''
@@ -42,7 +57,7 @@ class DataLoader:
         
         '''
         assert ext < self.num_ext, f'ext={ext} does not exist'
-        return self.data[ext].read()
+        return array(self.data[ext].read()) # this will add method 'imshow'
     
     def get_keyword(self, keyword):
         '''
