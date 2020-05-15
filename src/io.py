@@ -2,28 +2,34 @@
     MR: probably will shift to astropy.io.pyfits
 '''
 
-import fitsio
+
 import numpy
+import matplotlib.pyplot as plt
 
-
+import fitsio
 
 class array(numpy.ndarray):
-
+    ''' Wrapper around numpy.ndarray to facilitate visualization of 2D images 
+    using imshow
+    '''
     def __new__(cls, a):
         obj = numpy.asarray(a).view(cls)
         return obj
     
-    def imshow(self, **kwargs):
-        import matplotlib.pyplot as plt
-        plt.figure()
-        plt.imshow(self, **kwargs)
-        plt.show()
+    def imshow(self, ax=None, vmin=0, vmax=0.2, origin='lower', 
+               cmap=plt.cm.binary, title='', hold=False, **kwargs):
+        if ax is None:
+            fig, ax = plt.subplots()
+            
+        map1 = ax.imshow(self, vmin=vmin, vmax=vmax, origin=origin, cmap=cmap, **kwargs)
+        ax.set_title(title)
+        
+        if not hold:
+            plt.show()
 
 class DataLoader:
     '''
-    DataLoader
-    
-    
+    DataLoader    
     
     '''
     
