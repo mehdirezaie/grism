@@ -6,7 +6,8 @@
 import numpy
 import matplotlib.pyplot as plt
 
-import fitsio
+from astropy.io import fits
+
 
 class array(numpy.ndarray):
     ''' Wrapper around numpy.ndarray to facilitate visualization of 2D images 
@@ -43,16 +44,10 @@ class DataLoader:
         
         '''
         
-        self.data = fitsio.FITS(science_img)
-        self.header = self.data[header_ext].read_header() # read the header from the 0th ext
-        
-        self.header_keys = self.header.keys()
+        self.data = fits.open(science_img)
+        self.data.info()
+            
         self.num_ext = len(self.data)
-        
-        # MR: do we want to read all extensions?
-        #self.extensions = {}
-        #for d in self.data:
-        #    self.extensions[d.get_extname()] = (d.read(), d.get_extname(), d.read_header())
         
     def read_ext(self, ext=1):
         ''' 
@@ -63,18 +58,15 @@ class DataLoader:
         
         '''
         assert ext < self.num_ext, f'ext={ext} does not exist'
-        return array(self.data[ext].read()) # this will add method 'imshow'
+        return array(self.data[ext].data) # this will add method 'imshow'
     
-    def get_keyword(self, keyword):
+    def get_keyword(self, keyword, ext=0):
         '''
         inputs
         --------
         keyword: str
         '''
-        assert keyword in self.header_keys, f'Sorry, {keyword} does not exist!'
-        return self.header.get(keyword)
+        return self.data[ext].header.get(keyword)
     
     def __repr__(self):
-        ''' use the __repr__ method from fitsio.
-        '''
-        return self.data.__repr__()
+        return self.info
