@@ -69,7 +69,7 @@ The required modules are:
 
 
 
-'''Python
+```Python
 # FlatField takes the paths to flat field cube and config file
 # It also takes a set of reference coordinates
 
@@ -83,4 +83,4 @@ yref = np.array([500.]) # (with other calibration) leading xref,yref
 
 ff = FlatField(flat_file, conf_file)
 ff.run(xref, yref)
-'''
+```
