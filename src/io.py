@@ -17,8 +17,17 @@ class array(numpy.ndarray):
         obj = numpy.asarray(a).view(cls)
         return obj
 
-    def imshow(self, ax=None, vmin=0, vmax=0.2, origin='lower',
-               cmap=plt.cm.binary, title='', hold=False, **kwargs):
+    def imshow(self, ax=None, vmin=None, vmax=None, origin='lower',
+               cmap=plt.cm.viridis, title='', hold=False, **kwargs):
+        
+        m = numpy.isfinite(self)
+        
+        if vmin is None:                        
+            vmin = numpy.percentile(self[m], 5.)
+            
+        if vmax is None:
+            vmax = numpy.percentile(self[m], 95.)
+            
         if ax is None:
             fig, ax = plt.subplots()
 
