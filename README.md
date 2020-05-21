@@ -83,4 +83,8 @@ yref = np.array([500.]) # (with other calibration) leading xref,yref
 
 ff = FlatField(flat_file, conf_file)
 ff.run(xref, yref)
+
+flatfield = ff.output['flatfield'] # is a numpy array but also has the imshow functionality
+flatfield.imshow(origin='lower', cmap='viridis', hold=True)
 ```
+![](notebooks/figures/flatfield.png)
