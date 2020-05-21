@@ -65,3 +65,22 @@ The required modules are:
 4. scipy
 5. axehelper
 6. polynomial2d
+
+
+
+
+'''Python
+# FlatField takes the paths to flat field cube and config file
+# It also takes a set of reference coordinates
+
+
+conf_file = '../inputs/aXe_config/ACS.WFC.CHIP1.Cycle13.5.conf'
+flat_file = '../inputs/ACS_WFC_Grism_Data/save/CONF/WFC.flat.cube.CH1.2.fits'
+
+
+xref = np.array([400.]) # KP: assume source location
+yref = np.array([500.]) # (with other calibration) leading xref,yref
+
+ff = FlatField(flat_file, conf_file)
+ff.run(xref, yref)
+'''
